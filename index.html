@@ -1,0 +1,96 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Street Friends — Character Sprites</title>
+<style>
+:root{--bg:#0b0b14;--panel:#14141f;--panel2:#1c1c2b;--ink:#e7e7f0;--mut:#9a9ab0;--acc:#f2b53a;--acc2:#3a6ff2;--line:#2a2a3d;--good:#3ae05f}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-monospace,Menlo,Consolas,monospace}
+header{padding:20px 22px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#16161f,#0f0f18)}
+header h1{margin:0;font-size:18px;letter-spacing:3px}header h1 b{color:var(--acc)}
+header p{margin:6px 0 0;color:var(--mut);font-size:12px;letter-spacing:1px}
+.wrap{max-width:1000px;margin:0 auto;padding:26px 22px}
+.card{display:grid;grid-template-columns:340px 1fr;gap:22px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:26px}
+.stage{position:relative;height:430px;border-radius:10px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.stage.checker{background:conic-gradient(#20202e 90deg,#171722 0 180deg,#20202e 0 270deg,#171722 0) 0 0/28px 28px}
+.stage.white{background:#f4f4f8}.stage.arcade{background:radial-gradient(120% 90% at 50% 10%,#2a2350,#0b0b14)}
+#idle{height:390px;image-rendering:auto;filter:drop-shadow(0 10px 14px rgba(0,0,0,.4));margin-bottom:10px}
+.meta h2{margin:0;font-size:26px;letter-spacing:2px}.meta .sub{color:var(--acc);font-size:13px;letter-spacing:2px;margin:4px 0 14px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.pill{background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12px;color:var(--mut)}
+.pill b{color:var(--ink)}
+.ctrls{display:flex;gap:8px;align-items:center;margin-top:14px;flex-wrap:wrap}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:transparent;color:var(--ink);font:inherit;font-size:12px;padding:7px 12px;cursor:pointer}
+.seg button.on{background:var(--acc2);color:#fff}
+.portrait{width:64px;height:64px;border-radius:10px;border:2px solid var(--acc);object-fit:cover;object-position:top;background:#0007}
+h3.section{font-size:12px;letter-spacing:2px;color:var(--mut);text-transform:uppercase;margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.pose{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
+.pose .box{height:150px;display:flex;align-items:flex-end;justify-content:center}
+.pose img{max-height:150px;max-width:100%}
+.pose span{display:block;margin-top:8px;font-size:11px;letter-spacing:1px;color:var(--acc)}
+a.studio{color:var(--acc2);font-size:12px}
+footer{color:var(--mut);font-size:11px;text-align:center;padding:26px}
+</style></head><body>
+<header><h1>STREET FRIENDS · <b>CHARACTER SPRITES</b></h1>
+<p>the homies, one fighter at a time</p></header>
+<div class="wrap">
+  <div class="card">
+    <div>
+      <div class="stage arcade" id="stage">
+        <img id="idle" alt="Greg idle">
+      </div>
+      <div class="ctrls">
+        <div class="seg" id="bg">
+          <button data-b="arcade" class="on">Arcade</button>
+          <button data-b="checker">Checker</button>
+          <button data-b="white">White</button>
+        </div>
+        <div class="seg" id="spd">
+          <button data-d="220">Slow</button>
+          <button data-d="150" class="on">Idle</button>
+          <button data-d="90">Fast</button>
+        </div>
+      </div>
+    </div>
+    <div class="meta">
+      <div style="display:flex;gap:14px;align-items:center">
+        <img class="portrait" src="characters/greg/portrait.png" alt="Greg">
+        <div><h2>GREG</h2><div class="sub">“THE DESIGNER”</div></div>
+      </div>
+      <div class="row">
+        <span class="pill">Special: <b>BRO-BEAM</b></span>
+        <span class="pill">Archetype: <b>Tactical Counter</b></span>
+        <span class="pill">Style: <b>Design-Driven Combat</b></span>
+      </div>
+      <p style="color:var(--mut);font-size:13px;line-height:1.7">
+      Unapologetically millennial, secretly disciplined. Backwards cap, AirPods, an abstract
+      ninja-turtle sweater, salmon Crocs, an M4 on the sling, a knife on the hip — and he refuses
+      to put down the iced latte mid-fight. This is his neutral idle: a 3-frame breathing loop.</p>
+      <div class="row"><span class="pill">Idle: <b>3 frames ✓</b></span>
+        <span class="pill">Walk / Punch / Kick / Special: <b>next</b></span></div>
+      <p><a class="studio" href="studio/sprite-studio.html">▸ open the Sprite Studio</a></p>
+    </div>
+  </div>
+
+  <h3 class="section">Move set — reference poses</h3>
+  <div class="grid" id="poses"></div>
+</div>
+<footer>Street Friends Fighter · sprite repo · built one character at a time</footer>
+<script>
+const idleFrames=["characters/greg/frames/idle/idle_01.png","characters/greg/frames/idle/idle_02.png","characters/greg/frames/idle/idle_03.png"];
+const seq=[0,1,2,1]; let si=0,dur=150;
+const imgs=idleFrames.map(s=>{const i=new Image();i.src=s;return i;});
+const idle=document.getElementById('idle');
+function tick(){idle.src=idleFrames[seq[si%seq.length]];si++;setTimeout(tick,dur);}
+imgs[0].onload=()=>{idle.src=idleFrames[0];}; setTimeout(tick,dur);
+document.getElementById('bg').onclick=e=>{const b=e.target.closest('button');if(!b)return;
+ [...e.currentTarget.children].forEach(c=>c.classList.remove('on'));b.classList.add('on');
+ document.getElementById('stage').className='stage '+b.dataset.b;};
+document.getElementById('spd').onclick=e=>{const b=e.target.closest('button');if(!b)return;
+ [...e.currentTarget.children].forEach(c=>c.classList.remove('on'));b.classList.add('on');dur=+b.dataset.d;};
+const poses=[["01_idle","IDLE"],["02_walk","WALK"],["03_jump","JUMP"],["04_crouch","CROUCH"],
+["05_punch","PUNCH"],["06_kick","KICK"],["07_block","BLOCK"],["08_hit","HIT"],["09_ko","KO"]];
+document.getElementById('poses').innerHTML=poses.map(([f,l])=>
+ `<div class="pose"><div class="box"><img src="characters/greg/poses/${f}.png" alt="${l}"></div><span>${l}</span></div>`).join('');
+</script>
+</body></html>
